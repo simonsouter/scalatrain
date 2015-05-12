@@ -1,0 +1,26 @@
+#!/bin/sh
+exec scala "$0" "$@"
+!#
+
+import scala.io.Source
+import scala.sys.process.Process
+
+implicit class ArrayOps[A](args: Array[A]) {
+  def get(n: Int): Option[A] = if (args isDefinedAt n) Some(args(n)) else None
+}
+
+val branch = args get 0 getOrElse sys.error("Missing argument for branch!")
+val takeCount = args get 1 map (_.toInt) getOrElse Int.MaxValue
+
+Process(s"git checkout $branch").!!
+val commitIds = (Source fromString Process("git log --oneline").!!).getLines.toVector filterNot (_.contains("verify:ignore")) map (_ take 7)
+
+val verify =
+  (Process("sbt clean") /: (commitIds.init take takeCount).reverse) { (process, commitId) =>
+    process #&& Process(s"git checkout $commitId") #&& Process("sbt clean test")
+  }
+
+if (verify.! == 0) {
+  Process(s"git checkout $branch").!!
+  println("Successfully verified.")
+} else println("Verification failed!")

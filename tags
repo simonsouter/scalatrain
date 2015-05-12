@@ -1,0 +1,28 @@
+#!/bin/bash
+exec scala "$0" "$@"
+!#
+
+import scala.io.Source
+import scala.sys.process.Process
+
+val branch = args.headOption getOrElse "master"
+Process("git checkout %s" format branch).!!
+
+val idsAndComments = {
+  val gitLog = Source fromString Process("git log --oneline").!!
+  gitLog.getLines.toList map (_ splitAt 7)
+}
+
+def updateTag(comment: String, tag: String) = {
+  def gitTag(id: String) =
+    Process(s"git tag -f $tag $id").!
+  val ids =
+    idsAndComments collect { case (id, c) if c contains s"$comment" => id }
+  ids.headOption map gitTag getOrElse sys.error(s"Commit for $tag missing!")  
+}
+
+updateTag("Initial state", "ftts-first")
+updateTag("Exercise: Use Try", "ftts-last")
+updateTag("Exercise: Use Try", "as-first")
+updateTag("Exercise: CanBuildFrom for Queue", "as-last")
+Process("git push -f --tags").!
