@@ -26,15 +26,37 @@ class JourneyPlanner(trains: Set[Train]) {
       time <- train.timeAt(station)
     } yield (time, train)
 
-  def calculateConnections(departureTime: Time, fromStation: Station, toStation: Station) : Seq[Hop] = {
-    //TODO
-    null
+  def calculateConnections(departureTime: Time, fromStation: Station, toStation: Station): List[Hop] = {
+    traverse(fromStation, toStation, departureTime)
   }
-//
-//  def calculateConnections(departureTime: Time, fromStation: Station, toStation: Station) : Seq[Seq[Hop]] = {
-//    //TODO
-//    null
-//  }
+
+  def traverse(fromStation: Station, toStation: Station, departureTime: Time): List[Hop] = {
+    val hopsForStationAfterDepartureTime = getHopsForStationFromTime(fromStation, departureTime)
+
+    hopsForStationAfterDepartureTime match {
+      case List() => List()
+      case _ => {
+        hopsForStationAfterDepartureTime.flatMap(hop => {
+          if(hop.to == toStation) {
+            List(hop)
+          } else {
+            val x = traverse(hop.to, toStation, hop.departureTime)
+            x match {
+              case List() => List()
+              case _ => {
+                val t = hop :: x
+                t
+              }
+            }
+          }
+        })
+      }
+    }
+  }
+
+  def getHopsForStationFromTime(fromStation: Station, departureTime: Time): List[Hop] = {
+    mapHopsByStations.get(fromStation).getOrElse(Set()).filter(_.departureTime > departureTime).toList
+  }
 
   def isShortTrip(from: Station, to: Station): Boolean = {
     trains.exists(

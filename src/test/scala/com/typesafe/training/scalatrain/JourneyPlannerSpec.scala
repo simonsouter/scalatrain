@@ -5,8 +5,8 @@
 package com.typesafe.training.scalatrain
 
 import TestData._
-import java.lang.{ IllegalArgumentException => IAE }
-import org.scalatest.{ Matchers, WordSpec }
+import java.lang.{IllegalArgumentException => IAE}
+import org.scalatest.{Matchers, WordSpec}
 
 class JourneyPlannerSpec extends WordSpec with Matchers {
 
@@ -54,5 +54,10 @@ class JourneyPlannerSpec extends WordSpec with Matchers {
     "have no hops from Reddish" in {
       planner.mapHopsByStations.get(reddish) shouldBe None
     }
+  }
+
+  "t" in {
+    val a = planner.calculateConnections(Time(0, 0), munich, frankfurt)
+    a
   }
 }
