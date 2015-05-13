@@ -26,6 +26,10 @@ case class Train(info: TrainInfo, schedule: Seq[(Time, Station)]) {
   def backToBackStations: Seq[(Station, Station)] = {
     stations.zip(stations.tail)
   }
+
+  def stationDepartures(): Seq[(Station, Time)] = {
+    schedule.map(tuple => (tuple._2, tuple._1))
+  }
 }
 
 case class Station(name: String)
