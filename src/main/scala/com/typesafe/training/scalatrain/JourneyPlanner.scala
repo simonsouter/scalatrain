@@ -26,6 +26,16 @@ class JourneyPlanner(trains: Set[Train]) {
       time <- train.timeAt(station)
     } yield (time, train)
 
+  def calculateConnections(departureTime: Time, fromStation: Station, toStation: Station) : Seq[Hop] = {
+    //TODO
+    null
+  }
+//
+//  def calculateConnections(departureTime: Time, fromStation: Station, toStation: Station) : Seq[Seq[Hop]] = {
+//    //TODO
+//    null
+//  }
+
   def isShortTrip(from: Station, to: Station): Boolean = {
     trains.exists(
       train => {
