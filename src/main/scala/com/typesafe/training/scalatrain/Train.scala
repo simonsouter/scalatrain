@@ -14,6 +14,9 @@ case class Train(info: TrainInfo, schedule: Seq[(Time, Station)]) {
   // Could also be expressed in short notation: schedule map (_._2)
     schedule.map(stop => stop._2)
 
+  val hops: Seq[Hop] =
+    backToBackStations.map(b2b => Hop(b2b._1, b2b._2, this))
+
   def timeAt(station: Station): Option[Time] = {
     val maybeSchedule = schedule.find(_ match {
       case (_,`station`) => true
