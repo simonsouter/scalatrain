@@ -16,6 +16,8 @@ object TestData {
 
   val essen = Station("Essen")
 
+  val reddish = Station("Reddish")
+
   val ice724MunichTime = Time(8, 50)
 
   val ice724NurembergTime = Time(10)

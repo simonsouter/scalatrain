@@ -44,11 +44,15 @@ class JourneyPlannerSpec extends WordSpec with Matchers {
 
   "System Map" should {
     "have the correct hops from Munich" in {
-      planner.map.get(munich).get shouldBe Set(ice724Munich2Nuremberg, ice726Munich2Nuremberg)
+      planner.mapHopsByStations.get(munich).get shouldBe Set(ice724Munich2Nuremberg, ice726Munich2Nuremberg)
     }
 
     "have the correct hops from Nuremberg" in {
-      planner.map.get(nuremberg).get shouldBe Set(ice724Nuremburg2Frankfurt, ice726Nuremburg2Frankfurt)
+      planner.mapHopsByStations.get(nuremberg).get shouldBe Set(ice724Nuremburg2Frankfurt, ice726Nuremburg2Frankfurt)
+    }
+
+    "have no hops from Reddish" in {
+      planner.mapHopsByStations.get(reddish) shouldBe None
     }
   }
 }
