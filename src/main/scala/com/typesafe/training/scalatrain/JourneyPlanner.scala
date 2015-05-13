@@ -11,6 +11,11 @@ class JourneyPlanner(trains: Set[Train]) {
   // Could also be expressed in short notation: trains flatMap (_.stations)
     trains.flatMap(train => train.stations)
 
+  val mapHopsByStations: Map[Station, Set[Hop]] = {
+    val allHops = trains.flatMap(train => train.hops)
+    stations.map(station => station -> allHops.filter(hop => hop.from == station)).toMap
+  }
+
   def trainsAt(station: Station): Set[Train] =
   // Could also be expressed in short notation: trains filter (_.stations contains station)
     trains.filter(train => train.stations contains station)

@@ -41,4 +41,14 @@ class JourneyPlannerSpec extends WordSpec with Matchers {
       planner.isShortTrip(nuremberg, essen) shouldBe true
     }
   }
+
+  "System Map" should {
+    "have the correct hops from Munich" in {
+      planner.map.get(munich).get shouldBe Set(ice724Munich2Nuremberg, ice726Munich2Nuremberg)
+    }
+
+    "have the correct hops from Nuremberg" in {
+      planner.map.get(nuremberg).get shouldBe Set(ice724Nuremburg2Frankfurt, ice726Nuremburg2Frankfurt)
+    }
+  }
 }
