@@ -8,7 +8,7 @@ import scala.collection.immutable.Seq
 
 case class Train(info: TrainInfo, schedule: Seq[(Time, Station)]) {
   require(schedule.size >= 2, "schedule must contain at least two elements")
-  // TODO Verify that `schedule` is strictly increasing in time
+  require(timesConsecutive(schedule.map(time => time._1)))
 
   val stations: Seq[Station] =
   // Could also be expressed in short notation: schedule map (_._2)
@@ -19,7 +19,7 @@ case class Train(info: TrainInfo, schedule: Seq[(Time, Station)]) {
 
   def timeAt(station: Station): Option[Time] = {
     val maybeSchedule = schedule.find(_ match {
-      case (_,`station`) => true
+      case (_, `station`) => true
       case _ => false
     })
 
@@ -33,6 +33,15 @@ case class Train(info: TrainInfo, schedule: Seq[(Time, Station)]) {
   def stationDepartures(): Seq[(Station, Time)] = {
     schedule.map(tuple => (tuple._2, tuple._1))
   }
+
+  private def timesConsecutive(times: Seq[Time]): Boolean = {
+    val timePairs = times.zip(times.tail)
+    (for {
+      (time1, time2) <- timePairs
+    } yield {
+        time1 < time2
+      }).reduce(_ && _)
+  }
 }
 
 case class Station(name: String)
@@ -41,7 +50,7 @@ sealed abstract class TrainInfo {
   def number: Int
 }
 
-case class InterCityExpress(override val number: Int, hasWifi:Boolean = false) extends TrainInfo {
+case class InterCityExpress(override val number: Int, hasWifi: Boolean = false) extends TrainInfo {
 }
 
 case class RegionalExpress(override val number: Int) extends TrainInfo {
