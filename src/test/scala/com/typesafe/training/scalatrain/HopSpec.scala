@@ -14,7 +14,7 @@ class HopSpec extends WordSpec with Matchers {
   "Train ice724" should {
     "have hop from Munich to Nuremberg" in {
       ice724.hops.contains(ice724Munich2Nuremberg) shouldEqual true
-      ice724.hops.find(hop => hop.to == nuremberg).get.arrivalTime shouldEqual Some(ice724NurembergTime)
+      ice724.hops.find(hop => hop.to == nuremberg).get.arrivalTime shouldEqual ice724NurembergTime
     }
     "not stop in Essen" in {
       ice724.timeAt(essen) shouldEqual None

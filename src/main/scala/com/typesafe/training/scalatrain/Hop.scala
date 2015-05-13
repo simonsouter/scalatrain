@@ -9,11 +9,11 @@ case class Hop(from: Station, to: Station, train: Train) {
   require(train.stations.contains(to), s"$train train must pass the $to station!")
 
   def departureTime = {
-    train.timeAt(from)
+    train.timeAt(from).get
   }
 
   def arrivalTime = {
-    train.timeAt(to)
+    train.timeAt(to).get
   }
 
 //  override def compare(that: Hop): Int = {
