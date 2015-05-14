@@ -29,9 +29,9 @@ class JourneyPlanner(trains: Set[Train]) {
 //      time <- train.timeAt(station)
 //    } yield (time, train)
 
-  def calculateConnections(date: DateTime, departureTime: LocalTime, fromStation: Station, toStation: Station): List[List[Hop]] = {
+  def calculateConnections(date: DateTime, departureTime: LocalTime, fromStation: Station, toStation: Station): List[Path] = {
 
-    def traverse(fromStation: Station, acc:List[Hop], departureTime: LocalTime): List[List[Hop]] = {
+    def traverse(fromStation: Station, acc:List[Hop], departureTime: LocalTime): List[Path] = {
       val hopsForStationAfterDepartureTimeOnDay = getHopsForStationFromTimeOnDay(fromStation, date, departureTime).
         filter(hop => !acc.contains(hop))
 
@@ -40,7 +40,7 @@ class JourneyPlanner(trains: Set[Train]) {
         case _ => {
           hopsForStationAfterDepartureTimeOnDay.flatMap(hop => {
             if(hop.to == toStation) {
-              List(acc :+ hop)
+              List(Path(acc :+ hop))
             } else {
               traverse(hop.to, acc :+ hop, hop.arrivalTime.time)
             }
@@ -55,7 +55,7 @@ class JourneyPlanner(trains: Set[Train]) {
    * Gets all possible hops from the supplied fromStations, on the specified day AFTER the specified time.
    */
   def getHopsForStationFromTimeOnDay(fromStation: Station, date: DateTime, departureTime: LocalTime): List[Hop] = {
-    mapHopsByStations.get(fromStation).getOrElse(Set()).filter(hop =>
+    mapHopsByStations.getOrElse(fromStation, Set()).filter(hop =>
       hop.departureTime.available(date, departureTime)
     ).toList
   }
