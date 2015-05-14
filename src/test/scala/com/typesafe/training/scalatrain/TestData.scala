@@ -4,6 +4,8 @@
 
 package com.typesafe.training.scalatrain
 
+import org.joda.time.LocalTime
+
 object TestData {
 
   val munich = Station("Munich")
@@ -18,21 +20,21 @@ object TestData {
 
   val reddish = Station("Reddish")
 
-  val ice724MunichTime = Time(8, 50)
+  val ice724MunichTime = Schedule(Set(Days.Monday,Days.Tuesday,Days.Wednesday), new LocalTime(8,50))
 
-  val ice724NurembergTime = Time(10)
+  val ice724NurembergTime = Schedule(Set(Days.Monday,Days.Tuesday,Days.Wednesday), new LocalTime(10,0))
 
-  val ice724FrankfurtTime = Time(12, 10)
+  val ice724FrankfurtTime = Schedule(Set(Days.Monday,Days.Tuesday,Days.Wednesday), new LocalTime(12, 10))
 
-  val ice724CologneTime = Time(13, 39)
+  val ice724CologneTime = Schedule(Set(Days.Monday,Days.Tuesday,Days.Wednesday), new LocalTime(13, 39))
 
-  val ice726MunichTime = Time(7, 50)
+  val ice726MunichTime = Schedule(Set(Days.Monday,Days.Tuesday,Days.Wednesday), new LocalTime(7, 50))
 
-  val ice726NurembergTime = Time(9)
+  val ice726NurembergTime = Schedule(Set(Days.Monday,Days.Tuesday,Days.Wednesday), new LocalTime(9, 0))
 
-  val ice726FrankfurtTime = Time(11, 10)
+  val ice726FrankfurtTime = Schedule(Set(Days.Monday,Days.Tuesday,Days.Wednesday), new LocalTime(11, 10))
 
-  val ice726CologneTime = Time(13, 2)
+  val ice726CologneTime = Schedule(Set(Days.Monday,Days.Tuesday,Days.Wednesday), new LocalTime(13, 2))
 
   val ice724 = Train(
     InterCityExpress(724),

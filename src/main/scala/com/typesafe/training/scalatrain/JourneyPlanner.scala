@@ -3,6 +3,9 @@
  */
 package com.typesafe.training.scalatrain
 
+
+import org.joda.time.LocalTime
+
 import scala.collection.immutable.Set
 
 class JourneyPlanner(trains: Set[Train]) {
@@ -20,16 +23,16 @@ class JourneyPlanner(trains: Set[Train]) {
   // Could also be expressed in short notation: trains filter (_.stations contains station)
     trains.filter(train => train.stations contains station)
 
-  def stopsAt(station: Station): Set[(Time, Train)] =
-    for {
-      train <- trains
-      time <- train.timeAt(station)
-    } yield (time, train)
+//  def stopsAt(station: Station): Set[(Time, Train)] =
+//    for {
+//      train <- trains
+//      time <- train.timeAt(station)
+//    } yield (time, train)
 
-  def calculateConnections(departureTime: Time, fromStation: Station, toStation: Station): List[List[Hop]] = {
+  def calculateConnections(day: Days.Value, departureTime: LocalTime, fromStation: Station, toStation: Station): List[List[Hop]] = {
 
-    def traverse(fromStation: Station, acc:List[Hop], departureTime: Time): List[List[Hop]] = {
-      val hopsForStationAfterDepartureTime = getHopsForStationFromTime(fromStation, departureTime).
+    def traverse(fromStation: Station, acc:List[Hop], departureTime: LocalTime): List[List[Hop]] = {
+      val hopsForStationAfterDepartureTime = getHopsForStationFromTimeOnDay(fromStation, day, departureTime).
         filter(hop => !acc.contains(hop))
 
       hopsForStationAfterDepartureTime match {
@@ -39,7 +42,7 @@ class JourneyPlanner(trains: Set[Train]) {
             if(hop.to == toStation) {
               List(acc :+ hop)
             } else {
-              traverse(hop.to, acc :+ hop, hop.arrivalTime)
+              traverse(hop.to, acc :+ hop, hop.arrivalTime.time)
             }
           })
         }
@@ -48,8 +51,11 @@ class JourneyPlanner(trains: Set[Train]) {
     traverse(fromStation, List(), departureTime)
   }
 
-  def getHopsForStationFromTime(fromStation: Station, departureTime: Time): List[Hop] = {
-    mapHopsByStations.get(fromStation).getOrElse(Set()).filter(_.departureTime >= departureTime).toList
+  def getHopsForStationFromTimeOnDay(fromStation: Station, day: Days.Value, departureTime: LocalTime): List[Hop] = {
+
+    mapHopsByStations.get(fromStation).getOrElse(Set()).filter(hop =>
+      hop.departureTime.days.contains(day) && !hop.departureTime.time.isBefore(departureTime)
+    ).toList
   }
 
   def isShortTrip(from: Station, to: Station): Boolean = {

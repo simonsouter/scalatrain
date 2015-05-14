@@ -9,7 +9,6 @@ object Days extends Enumeration {
 /**
  * Created by user on 14/05/15.
  */
-case class Schedule(days: Set[Int], time: LocalTime) {
-
+case class Schedule(days: Set[Days.Value], time: LocalTime) {
 
 }
