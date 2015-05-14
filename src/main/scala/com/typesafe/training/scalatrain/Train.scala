@@ -4,24 +4,35 @@
 
 package com.typesafe.training.scalatrain
 
+import org.joda.time.LocalTime
+
 import scala.collection.immutable.Seq
 
-case class Train(info: TrainInfo, schedule: Seq[(Time, Station)], costModifier: Double = 1.0) {
-  require(schedule.size >= 2, "schedule must contain at least two elements")
-  require(timesConsecutive(schedule.map(time => time._1)))
+case class Train(info: TrainInfo, timeTable: Seq[(Schedule, Station)], costModifier: Double = 1.0) {
+  require(timeTable.size >= 2, "schedule must contain at least two elements")
+  require(timesConsecutive(timeTable.map(time => time._1)))
 
   val stations: Seq[Station] =
   // Could also be expressed in short notation: schedule map (_._2)
-    schedule.map(stop => stop._2)
+    timeTable.map(stop => stop._2)
 
   val hops: Seq[Hop] =
     backToBackStations.map(b2b => Hop(b2b._1, b2b._2, this))
 
-  def timeAt(station: Station): Option[Time] = {
-    val maybeSchedule = schedule.find(_ match {
-      case (_, `station`) => true
-      case _ => false
-    })
+//  def timeAt(station: Station, day: Int): Option[LocalTime] = {
+//    val times = for {
+//      (sched, stat) <- schedule if sched.days.contains(day) && stat == station
+//    } yield {sched.time}
+//
+//    if(times.isEmpty) None else Some(times.head)
+//  }
+
+  def timeAt(station: Station): Option[Schedule] = {
+    val maybeSchedule = timeTable.find(sched =>
+      sched match {
+        case (_, `station`) => true
+        case _ => false
+      })
 
     maybeSchedule.map(_._1)
   }
@@ -30,17 +41,20 @@ case class Train(info: TrainInfo, schedule: Seq[(Time, Station)], costModifier: 
     stations.zip(stations.tail)
   }
 
-  def stationDepartures(): Seq[(Station, Time)] = {
-    schedule.map(tuple => (tuple._2, tuple._1))
-  }
+//  def stationDepartures(): Seq[(Station, Time)] = {
+//    schedule.map(tuple => (tuple._2, tuple._1))
+//  }
 
-  private def timesConsecutive(times: Seq[Time]): Boolean = {
-    val timePairs = times.zip(times.tail)
-    (for {
-      (time1, time2) <- timePairs
-    } yield {
-        time1 < time2
-      }).reduce(_ && _)
+  //TODO
+  private def timesConsecutive(times: Seq[Schedule]): Boolean = {
+    true
+
+    //    val timePairs = times.zip(times.tail)
+    //    (for {
+    //      (time1, time2) <- timePairs
+    //    } yield {
+    //        time1 < time2
+    //      }).reduce(_ && _)
   }
 }
 
@@ -50,13 +64,10 @@ sealed abstract class TrainInfo {
   def number: Int
 }
 
-case class InterCityExpress(override val number: Int, hasWifi: Boolean = false) extends TrainInfo {
-}
+case class InterCityExpress(override val number: Int, hasWifi: Boolean = false) extends TrainInfo
 
-case class RegionalExpress(override val number: Int) extends TrainInfo {
-}
+case class RegionalExpress(override val number: Int) extends TrainInfo
 
-case class BavarianRegional(override val number: Int) extends TrainInfo {
-}
+case class BavarianRegional(override val number: Int) extends TrainInfo
 
 

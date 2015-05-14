@@ -19,7 +19,7 @@ case class Path(path: List[Hop]) {
 
 object lengthOrdering extends Ordering[Hop] {
   def compare(x: Hop, y: Hop): Int = {
-    (x.arrivalTime - x.departureTime) - (y.arrivalTime - y.departureTime)
+    (x.arrivalTime.time compareTo x.departureTime.time) - (y.arrivalTime.time compareTo y.departureTime.time)
   }
 }
 
@@ -27,12 +27,12 @@ case class Hop(from: Station, to: Station, train: Train) {
   require(train.stations.contains(from), s"$train train must pass the $from station!")
   require(train.stations.contains(to), s"$train train must pass the $to station!")
 
-  val departureTime: Time = train.timeAt(from).get
+  val departureTime: Schedule = train.timeAt(from).get
 
-  val arrivalTime: Time = train.timeAt(to).get
+  val arrivalTime: Schedule = train.timeAt(to).get
 
   val cost: Cost = {
-    arrivalTime - departureTime match {
+    arrivalTime.time compareTo departureTime.time match {
       case x: Int => Cost.generateCost(x, train.costModifier)
       case _ => Cost.generateCost(1, 1.0)
     }
