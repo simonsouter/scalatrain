@@ -16,14 +16,21 @@ case class Schedule(days: Set[Days.Value], time: LocalTime, exceptions: List[Dat
    */
   def available(date: DateTime, requiredTime: LocalTime): Boolean = {
 
-    val exMatched = exceptions.find(ex => {
-      if (date.getYear == ex.getYear && date.getMonthOfYear == ex.getMonthOfYear && ex.dayOfMonth() == ex.dayOfMonth()) {
-        true
-      } else false
-    }).isDefined
+    //Is the date found in the exception?
+    val exMatched = exceptions.find(ex => datesMatch(date, ex)).isDefined
 
     if (exMatched) false
     else if (days.contains(Days.apply(date.getDayOfWeek() - 1)) && !requiredTime.isAfter(time)) true
     else false
+  }
+
+  private def datesMatch(thisDate: DateTime, thatDate: DateTime): Boolean = {
+    if (thisDate.getYear == thatDate.getYear &&
+      thisDate.getMonthOfYear == thatDate.getMonthOfYear &&
+      thisDate.getDayOfMonth() == thatDate.getDayOfMonth()) {
+      true
+    } else {
+      false
+    }
   }
 }
