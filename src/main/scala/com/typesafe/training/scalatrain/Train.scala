@@ -6,7 +6,7 @@ package com.typesafe.training.scalatrain
 
 import scala.collection.immutable.Seq
 
-case class Train(info: TrainInfo, schedule: Seq[(Time, Station)]) {
+case class Train(info: TrainInfo, schedule: Seq[(Time, Station)], costModifier: Double = 1.0) {
   require(schedule.size >= 2, "schedule must contain at least two elements")
   require(timesConsecutive(schedule.map(time => time._1)))
 
