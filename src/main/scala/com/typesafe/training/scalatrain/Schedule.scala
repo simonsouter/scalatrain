@@ -11,4 +11,10 @@ object Days extends Enumeration {
  */
 case class Schedule(days: Set[Days.Value], time: LocalTime) {
 
+  /**
+   * Returns true if the schedule runs on the correct day and the time is not before the provided time.
+   */
+  def available(day: Days.Value, requiredTime: LocalTime): Boolean = {
+    if (days.contains(day) && !requiredTime.isAfter(time)) true else false
+  }
 }

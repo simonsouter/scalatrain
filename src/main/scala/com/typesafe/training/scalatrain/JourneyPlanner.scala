@@ -56,7 +56,7 @@ class JourneyPlanner(trains: Set[Train]) {
    */
   def getHopsForStationFromTimeOnDay(fromStation: Station, day: Days.Value, departureTime: LocalTime): List[Hop] = {
     mapHopsByStations.get(fromStation).getOrElse(Set()).filter(hop =>
-      hop.departureTime.days.contains(day) && !hop.departureTime.time.isBefore(departureTime)
+      hop.departureTime.available(day, departureTime)
     ).toList
   }
 
