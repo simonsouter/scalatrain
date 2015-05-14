@@ -4,6 +4,10 @@ import org.joda.time.{DateTime, LocalTime}
 
 object Days extends Enumeration {
   val Monday, Tuesday, Wednesday, Thursday, Friday, Saturday, Sunday = Value
+
+  def jodaDayToDays(day:Int) : Days.Value = {
+    Days.apply(day - 1)
+  }
 }
 
 /**
@@ -23,7 +27,7 @@ case class Schedule(days: Set[Days.Value], time: LocalTime, exceptions: List[Dat
     val exMatched = exceptions.find(ex => datesMatch(date, ex)).isDefined
 
     if(exMatched) false
-    else if(days.contains(Days.apply(date.getDayOfWeek() - 1))) true
+    else if(days.contains(Days.jodaDayToDays(date.getDayOfWeek()))) true
     else false
   }
 
