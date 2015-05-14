@@ -13,7 +13,6 @@ case class Train(info: TrainInfo, timeTable: Seq[(Schedule, Station)], costModif
   require(timesConsecutive(timeTable.map(time => time._1)))
 
   val stations: Seq[Station] =
-  // Could also be expressed in short notation: schedule map (_._2)
     timeTable.map(stop => stop._2)
 
   val hops: Seq[Hop] =

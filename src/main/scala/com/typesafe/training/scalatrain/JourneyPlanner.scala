@@ -14,6 +14,13 @@ class JourneyPlanner(trains: Set[Train]) {
   // Could also be expressed in short notation: trains flatMap (_.stations)
     trains.flatMap(train => train.stations)
 
+  lazy val sinkStations: Seq[Station] = {
+    val sinkStations = for {
+      (a,b) <- mapHopsByStations if b.isEmpty
+    } yield a
+    sinkStations.toSeq
+  }
+
   val mapHopsByStations: Map[Station, Set[Hop]] = {
     val allHops = trains.flatMap(train => train.hops)
     stations.map(station => station -> allHops.filter(hop => hop.from == station)).toMap

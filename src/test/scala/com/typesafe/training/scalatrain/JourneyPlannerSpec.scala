@@ -88,4 +88,10 @@ class JourneyPlannerSpec extends WordSpec with Matchers {
       route1.size shouldBe 3
     }
   }
+
+  "Sink Stations" should {
+    "Find all sink stations" in {
+      planner.sinkStations.size shouldBe 2
+    }
+  }
 }
