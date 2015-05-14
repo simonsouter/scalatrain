@@ -12,6 +12,7 @@ resolvers += "mvnrepository" at "http://mvnrepository.com/artifact/"
 
 libraryDependencies ++= Dependencies.scalaTrain
 libraryDependencies += "org.joda" % "joda-money" % "0.10.0"
+libraryDependencies += "com.typesafe.play" %% "play-ws" % Version.playJson
 
 scalacOptions ++= List(
   "-unchecked",

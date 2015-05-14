@@ -23,7 +23,7 @@ case class Path(path: List[Hop]) {
   //  }
 }
 
-object lengthOrdering extends Ordering[Hop] {
+object LengthOrdering extends Ordering[Hop] {
   def compare(x: Hop, y: Hop): Int = {
     x.travelTime - y.travelTime
   }
