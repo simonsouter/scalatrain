@@ -11,12 +11,12 @@ import org.scalatest.{Matchers, WordSpec}
 
 class PathSpec extends WordSpec with Matchers {
 
-  "Path" should {
+  "Paths" should {
     "be sortable by time" in {
-      ice724Path.orderByTravelTime shouldEqual ice724PathByTime
+      List(ice726Path, ice724Path).sorted(pathTimeOrdering) shouldEqual List(ice724Path, ice726Path)
     }
     "be sortable by cost" in {
-      ice726Path.orderByCost shouldEqual ice726PathByCost
+      List(expensivePath, cheapPath).sorted(pathCostOrdering) shouldEqual List(cheapPath, expensivePath)
     }
   }
 

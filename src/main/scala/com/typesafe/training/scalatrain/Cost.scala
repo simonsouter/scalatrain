@@ -47,6 +47,11 @@ case class Cost(dollars: Int = 0, cents: Int = 0) extends Ordered[Cost] {
   }
   def *(that: Double): Cost = multiply(that)
 
+  def +(that: Cost): Cost = {
+    val cent2dollar = (cents + that.cents) / 100
+    Cost((dollars + that.dollars + cent2dollar), (cents + that.cents) % 100)
+  }
+
   def -(that: Cost): Int = this.asCents - that.asCents
 
   def compare(that: Cost): Int = this - that

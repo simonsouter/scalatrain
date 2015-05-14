@@ -18,6 +18,9 @@ class CostSpec extends WordSpec with Matchers {
     "multiply correctly" in {
       Cost(2, 50) * 2 shouldEqual Cost(5)
     }
+    "add correctly" in {
+      Cost(3, 49) + Cost(1, 51) shouldEqual Cost(5)
+    }
     "complain of negative or impossible values" in {
       an[IAE] should be thrownBy Cost(1, 999)
       an[IAE] should be thrownBy Cost(-5, 50)
