@@ -6,17 +6,33 @@ package com.typesafe.training.scalatrain
 
 import org.joda.time.Minutes
 
+object pathCostOrdering extends Ordering[Path] {
+  def compare(x: Path, y: Path): Int = {
+    x.totalCost - y.totalCost
+  }
+}
+
+object pathTimeOrdering extends Ordering[Path] {
+  def compare(x: Path, y: Path): Int = {
+    x.totalTime - y.totalTime
+  }
+}
+
 case class Path(path: List[Hop]) {
 
   val size: Int = path.size
 
-  def orderByCost: Path = {
-    Path(path.sortBy(h => h.cost))
-  }
+  val totalCost: Cost = path.foldLeft(Cost(0))((c, h) => c + h.cost)
 
-  def orderByTravelTime: Path = {
-    Path(path.sorted(lengthOrdering))
-  }
+  val totalTime: Int = path.foldLeft(0)((t, h) => t + h.travelTime)
+
+//  def orderByCost: Path = {
+//    Path(path.sortBy(h => h.cost))
+//  }
+//
+//  def orderByTravelTime: Path = {
+//    Path(path.sorted(lengthOrdering))
+//  }
 }
 
 object lengthOrdering extends Ordering[Hop] {

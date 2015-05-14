@@ -71,6 +71,8 @@ object TestData {
   //Paths
   val ice724Path = Path(List(ice724Munich2Nuremberg, ice724Nuremburg2Frankfurt, ice724Frankfurt2Cologne))
   val ice726Path = Path(List(ice726Munich2Nuremberg, ice726Nuremburg2Frankfurt, ice726Frankfurt2Cologne))
+  val cheapPath = Path(List(ice724Munich2Nuremberg))
+  val expensivePath = Path(ice724Path.path ++ ice726Path.path)
 
   val ice724PathByTime = Path(List(ice724Munich2Nuremberg, ice724Frankfurt2Cologne, ice724Nuremburg2Frankfurt))
   val ice726PathByCost = Path(List(ice726Munich2Nuremberg, ice726Frankfurt2Cologne, ice726Nuremburg2Frankfurt))
