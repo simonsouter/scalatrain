@@ -50,13 +50,10 @@ sealed abstract class TrainInfo {
   def number: Int
 }
 
-case class InterCityExpress(override val number: Int, hasWifi: Boolean = false) extends TrainInfo {
-}
+case class InterCityExpress(override val number: Int, hasWifi: Boolean = false) extends TrainInfo
 
-case class RegionalExpress(override val number: Int) extends TrainInfo {
-}
+case class RegionalExpress(override val number: Int) extends TrainInfo
 
-case class BavarianRegional(override val number: Int) extends TrainInfo {
-}
+case class BavarianRegional(override val number: Int) extends TrainInfo
 
 
