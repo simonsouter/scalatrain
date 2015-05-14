@@ -38,7 +38,7 @@ class JourneyPlanner(trains: Set[Train]) {
             if(hop.to == toStation) {
               List(acc :+ hop)
             } else {
-              traverse(hop.to, acc :+ hop, hop.departureTime)
+              traverse(hop.to, acc :+ hop, hop.arrivalTime)
             }
           })
         }
@@ -48,10 +48,8 @@ class JourneyPlanner(trains: Set[Train]) {
     traverse(fromStation, List(), departureTime)
   }
 
-
-
   def getHopsForStationFromTime(fromStation: Station, departureTime: Time): List[Hop] = {
-    mapHopsByStations.get(fromStation).getOrElse(Set()).filter(_.departureTime > departureTime).toList
+    mapHopsByStations.get(fromStation).getOrElse(Set()).filter(_.departureTime >= departureTime).toList
   }
 
   def isShortTrip(from: Station, to: Station): Boolean = {
