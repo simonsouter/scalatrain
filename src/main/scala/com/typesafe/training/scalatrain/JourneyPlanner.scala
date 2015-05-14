@@ -4,7 +4,7 @@
 package com.typesafe.training.scalatrain
 
 
-import org.joda.time.LocalTime
+import org.joda.time.{DateTime, LocalTime}
 
 import scala.collection.immutable.Set
 
@@ -29,10 +29,10 @@ class JourneyPlanner(trains: Set[Train]) {
 //      time <- train.timeAt(station)
 //    } yield (time, train)
 
-  def calculateConnections(day: Days.Value, departureTime: LocalTime, fromStation: Station, toStation: Station): List[Path] = {
+  def calculateConnections(date: DateTime, departureTime: LocalTime, fromStation: Station, toStation: Station): List[Path] = {
 
     def traverse(fromStation: Station, acc:List[Hop], departureTime: LocalTime): List[Path] = {
-      val hopsForStationAfterDepartureTimeOnDay = getHopsForStationFromTimeOnDay(fromStation, day, departureTime).
+      val hopsForStationAfterDepartureTimeOnDay = getHopsForStationFromTimeOnDay(fromStation, date, departureTime).
         filter(hop => !acc.contains(hop))
 
       hopsForStationAfterDepartureTimeOnDay match {
@@ -54,9 +54,9 @@ class JourneyPlanner(trains: Set[Train]) {
   /**
    * Gets all possible hops from the supplied fromStations, on the specified day AFTER the specified time.
    */
-  def getHopsForStationFromTimeOnDay(fromStation: Station, day: Days.Value, departureTime: LocalTime): List[Hop] = {
+  def getHopsForStationFromTimeOnDay(fromStation: Station, date: DateTime, departureTime: LocalTime): List[Hop] = {
     mapHopsByStations.get(fromStation).getOrElse(Set()).filter(hop =>
-      hop.departureTime.available(day, departureTime)
+      hop.departureTime.available(date, departureTime)
     ).toList
   }
 
