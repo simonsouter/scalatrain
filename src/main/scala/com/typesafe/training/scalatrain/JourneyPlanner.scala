@@ -62,6 +62,14 @@ class JourneyPlanner(trains: Set[Train]) {
     traverse(fromStation, List(), departureTime)
   }
 
+  def calculateTrueCost(path: Path, date: DateTime): Cost = {
+    date match {
+      case x if DateTime.now plusDays 1 isAfter x => path.totalCost * 0.75
+      case x if DateTime.now plusDays 14 isAfter x => path.totalCost * 1.5
+      case x if DateTime.now plusDays 14 isBefore x => path.totalCost * 1.0
+    }
+  }
+
   /**
    * Gets all possible hops from the supplied fromStations, on the specified day AFTER the specified time.
    */

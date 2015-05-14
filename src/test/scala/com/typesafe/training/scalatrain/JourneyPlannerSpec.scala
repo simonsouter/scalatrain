@@ -89,6 +89,18 @@ class JourneyPlannerSpec extends WordSpec with Matchers {
     }
   }
 
+  "CalculateTrueCost" should {
+    "calculate discount if path is less than 1 day away" in {
+      planner.calculateTrueCost(ice724Path, DateTime.now plusHours 5) shouldEqual ice724Path.totalCost * 0.75
+    }
+    "do nothing if path is more than 2 weeks away" in {
+      planner.calculateTrueCost(ice724Path, DateTime.now plusDays 15) shouldEqual ice724Path.totalCost * 1.0
+    }
+    "increase price if path is less than 2 weeks away but more than 1 day" in {
+      planner.calculateTrueCost(ice724Path, DateTime.now plusDays 12) shouldEqual ice724Path.totalCost * 1.5
+    }
+  }
+
   "Sink Stations" should {
     "Find all sink stations" in {
       planner.sinkStations.size shouldBe 2
