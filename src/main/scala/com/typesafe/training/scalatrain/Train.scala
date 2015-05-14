@@ -8,13 +8,13 @@ import org.joda.time.LocalTime
 
 import scala.collection.immutable.Seq
 
-case class Train(info: TrainInfo, schedule: Seq[(Schedule, Station)], costModifier: Double = 1.0) {
-  require(schedule.size >= 2, "schedule must contain at least two elements")
-  require(timesConsecutive(schedule.map(time => time._1)))
+case class Train(info: TrainInfo, timeTable: Seq[(Schedule, Station)], costModifier: Double = 1.0) {
+  require(timeTable.size >= 2, "schedule must contain at least two elements")
+  require(timesConsecutive(timeTable.map(time => time._1)))
 
   val stations: Seq[Station] =
   // Could also be expressed in short notation: schedule map (_._2)
-    schedule.map(stop => stop._2)
+    timeTable.map(stop => stop._2)
 
   val hops: Seq[Hop] =
     backToBackStations.map(b2b => Hop(b2b._1, b2b._2, this))
@@ -28,7 +28,7 @@ case class Train(info: TrainInfo, schedule: Seq[(Schedule, Station)], costModifi
 //  }
 
   def timeAt(station: Station): Option[Schedule] = {
-    val maybeSchedule = schedule.find(sched =>
+    val maybeSchedule = timeTable.find(sched =>
       sched match {
         case (_, `station`) => true
         case _ => false

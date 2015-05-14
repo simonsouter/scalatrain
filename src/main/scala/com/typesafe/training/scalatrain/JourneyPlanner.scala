@@ -32,13 +32,13 @@ class JourneyPlanner(trains: Set[Train]) {
   def calculateConnections(day: Days.Value, departureTime: LocalTime, fromStation: Station, toStation: Station): List[List[Hop]] = {
 
     def traverse(fromStation: Station, acc:List[Hop], departureTime: LocalTime): List[List[Hop]] = {
-      val hopsForStationAfterDepartureTime = getHopsForStationFromTimeOnDay(fromStation, day, departureTime).
+      val hopsForStationAfterDepartureTimeOnDay = getHopsForStationFromTimeOnDay(fromStation, day, departureTime).
         filter(hop => !acc.contains(hop))
 
-      hopsForStationAfterDepartureTime match {
+      hopsForStationAfterDepartureTimeOnDay match {
         case List() => List()
         case _ => {
-          hopsForStationAfterDepartureTime.flatMap(hop => {
+          hopsForStationAfterDepartureTimeOnDay.flatMap(hop => {
             if(hop.to == toStation) {
               List(acc :+ hop)
             } else {
@@ -51,8 +51,10 @@ class JourneyPlanner(trains: Set[Train]) {
     traverse(fromStation, List(), departureTime)
   }
 
+  /**
+   * Gets all possible hops from the supplied fromStations, on the specified day AFTER the specified time.
+   */
   def getHopsForStationFromTimeOnDay(fromStation: Station, day: Days.Value, departureTime: LocalTime): List[Hop] = {
-
     mapHopsByStations.get(fromStation).getOrElse(Set()).filter(hop =>
       hop.departureTime.days.contains(day) && !hop.departureTime.time.isBefore(departureTime)
     ).toList
