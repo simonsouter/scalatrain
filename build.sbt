@@ -8,8 +8,10 @@ scalaVersion := Version.scala
 
 // The Typesafe repository
 resolvers += "Typesafe Releases" at "http://repo.typesafe.com/typesafe/releases/"
+resolvers += "mvnrepository" at "http://mvnrepository.com/artifact/"
 
 libraryDependencies ++= Dependencies.scalaTrain
+libraryDependencies += "org.joda" % "joda-money" % "0.10.0"
 
 scalacOptions ++= List(
   "-unchecked",
