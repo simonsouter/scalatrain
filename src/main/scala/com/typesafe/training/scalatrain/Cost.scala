@@ -9,15 +9,6 @@ import play.api.libs.json.JsValue
 import scala.util.Try
 
 object Cost {
-  def fromJson(js: JsValue): Option[Time] = {
-    (for {
-      hour <- Try((js \ "hours").as[Int])
-      min = Try((js \ "minutes").as[Int]).getOrElse(0)
-    } yield {
-        Time(hour, min)
-      }).toOption
-  }
-
   /**
    * Given length of a Hop, generate the cost
    * @param minutes Minutes from departure time to arrival time, as an Int
