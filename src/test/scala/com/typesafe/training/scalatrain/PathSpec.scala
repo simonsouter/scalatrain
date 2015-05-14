@@ -13,10 +13,15 @@ class PathSpec extends WordSpec with Matchers {
 
   "Paths" should {
     "be sortable by time" in {
-      List(ice726Path, ice724Path).sorted(pathTimeOrdering) shouldEqual List(ice724Path, ice726Path)
+      import com.typesafe.training.scalatrain.implicits.ListOps
+
+      List(ice726Path, ice724Path).sortPathTime shouldEqual List(ice724Path, ice726Path)
+
     }
     "be sortable by cost" in {
-      List(expensivePath, cheapPath).sorted(pathCostOrdering) shouldEqual List(cheapPath, expensivePath)
+      import com.typesafe.training.scalatrain.implicits.ListOps
+
+      List(expensivePath, cheapPath).sortPathCost shouldEqual List(cheapPath, expensivePath)
     }
   }
 
