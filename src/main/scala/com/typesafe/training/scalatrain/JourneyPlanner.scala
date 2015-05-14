@@ -55,7 +55,7 @@ class JourneyPlanner(trains: Set[Train]) {
    * Gets all possible hops from the supplied fromStations, on the specified day AFTER the specified time.
    */
   def getHopsForStationFromTimeOnDay(fromStation: Station, date: DateTime, departureTime: LocalTime): List[Hop] = {
-    mapHopsByStations.get(fromStation).getOrElse(Set()).filter(hop =>
+    mapHopsByStations.getOrElse(fromStation, Set()).filter(hop =>
       hop.departureTime.available(date, departureTime)
     ).toList
   }
