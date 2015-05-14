@@ -51,14 +51,29 @@ case class Hop(from: Station, to: Station, train: Train) {
 
 }
 
-object pathCostOrdering extends Ordering[Path] {
+object PathCostOrdering extends Ordering[Path] {
   def compare(x: Path, y: Path): Int = {
     x.totalCost - y.totalCost
   }
 }
 
-object pathTimeOrdering extends Ordering[Path] {
+object PathTimeOrdering extends Ordering[Path] {
   def compare(x: Path, y: Path): Int = {
     x.totalTime - y.totalTime
+  }
+}
+
+object Routing {
+  implicit class ListOps(list: List[Path]) {
+    def random = {
+      List(4, 5, 6)
+    }
+    def sortPathCost = {
+      list.sorted(PathCostOrdering)
+    }
+
+    def sortPathTime = {
+      list.sorted(PathTimeOrdering)
+    }
   }
 }
