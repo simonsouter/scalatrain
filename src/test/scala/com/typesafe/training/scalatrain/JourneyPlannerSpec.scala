@@ -57,7 +57,7 @@ class JourneyPlannerSpec extends WordSpec with Matchers {
     }
   }
 
-  "Calculate Connections" should {
+  "Calculate Connections with time" should {
     "Munich to Frankfurt" in {
       val munichToFrankfurt = planner.calculateConnections(new DateTime(), new LocalTime(8, 30), munich, frankfurt)
       munichToFrankfurt.size shouldBe 1
@@ -68,6 +68,22 @@ class JourneyPlannerSpec extends WordSpec with Matchers {
     "Munich to Cologne" in {
       val munichToCologne = planner.calculateConnections(new DateTime(), new LocalTime(8, 30), munich, cologne)
       munichToCologne.size shouldBe 1
+      val route1 = munichToCologne(0)
+      route1.size shouldBe 3
+    }
+  }
+
+  "Calculate Connections without time" should {
+    "Munich to Frankfurt" in {
+      val munichToFrankfurt = planner.calculateConnections(new DateTime(), munich, frankfurt)
+      munichToFrankfurt.size shouldBe 3
+      val route1 = munichToFrankfurt(0)
+      route1.size shouldBe 2
+    }
+
+    "Munich to Cologne" in {
+      val munichToCologne = planner.calculateConnections(new DateTime(), munich, cologne)
+      munichToCologne.size shouldBe 3
       val route1 = munichToCologne(0)
       route1.size shouldBe 3
     }
