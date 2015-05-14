@@ -29,7 +29,8 @@ class JourneyPlanner(trains: Set[Train]) {
   def calculateConnections(departureTime: Time, fromStation: Station, toStation: Station): List[List[Hop]] = {
 
     def traverse(fromStation: Station, acc:List[Hop], departureTime: Time): List[List[Hop]] = {
-      val hopsForStationAfterDepartureTime = getHopsForStationFromTime(fromStation, departureTime)
+      val hopsForStationAfterDepartureTime = getHopsForStationFromTime(fromStation, departureTime).
+        filter(hop => !acc.contains(hop))
 
       hopsForStationAfterDepartureTime match {
         case List() => List()
@@ -44,7 +45,6 @@ class JourneyPlanner(trains: Set[Train]) {
         }
       }
     }
-
     traverse(fromStation, List(), departureTime)
   }
 
