@@ -4,6 +4,8 @@
 
 package com.typesafe.training.scalatrain
 
+import org.joda.time.Minutes
+
 case class Path(path: List[Hop]) {
 
   val size: Int = path.size
@@ -19,7 +21,7 @@ case class Path(path: List[Hop]) {
 
 object lengthOrdering extends Ordering[Hop] {
   def compare(x: Hop, y: Hop): Int = {
-    (x.arrivalTime.time compareTo x.departureTime.time) - (y.arrivalTime.time compareTo y.departureTime.time)
+    x.travelTime - y.travelTime
   }
 }
 
@@ -31,10 +33,11 @@ case class Hop(from: Station, to: Station, train: Train) {
 
   val arrivalTime: Schedule = train.timeAt(to).get
 
+  val travelTime: Int = Minutes.minutesBetween(departureTime.time, arrivalTime.time).getMinutes
+
   val cost: Cost = {
-    arrivalTime.time compareTo departureTime.time match {
+    Minutes.minutesBetween(departureTime.time, arrivalTime.time).getMinutes match {
       case x: Int => Cost.generateCost(x, train.costModifier)
-      case _ => Cost.generateCost(1, 1.0)
     }
   }
 

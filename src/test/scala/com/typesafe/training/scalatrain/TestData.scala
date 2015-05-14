@@ -59,9 +59,9 @@ object TestData {
   val planner = new JourneyPlanner(Set(ice724, ice726))
 
   //Hops: ice724
-  val ice724Munich2Nuremberg = Hop(munich, nuremberg, ice724)
-  val ice724Nuremburg2Frankfurt = Hop(nuremberg, frankfurt, ice724)
-  val ice724Frankfurt2Cologne = Hop(frankfurt, cologne, ice724)
+  val ice724Munich2Nuremberg = Hop(munich, nuremberg, ice724) // 1 hour 10
+  val ice724Nuremburg2Frankfurt = Hop(nuremberg, frankfurt, ice724) // 2 hour 10
+  val ice724Frankfurt2Cologne = Hop(frankfurt, cologne, ice724) // 1 hour 29
 
   //Hops: ice726
   val ice726Munich2Nuremberg = Hop(munich, nuremberg, ice726)

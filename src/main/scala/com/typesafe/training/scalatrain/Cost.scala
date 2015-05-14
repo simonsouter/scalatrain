@@ -4,7 +4,7 @@
 
 package com.typesafe.training.scalatrain
 
-import play.api.libs.json.{Json, JsValue}
+import play.api.libs.json.JsValue
 
 import scala.util.Try
 
@@ -20,16 +20,17 @@ object Cost {
 
   /**
    * Given length of a Hop, generate the cost
-   * @param minutes
+   * @param minutes Minutes from departure time to arrival time, as an Int
+   * @param modifier Double that increases or decreases ticket cost
    * @return Cost object
    */
   def generateCost(minutes: Int, modifier: Double): Cost = {
-    minutes match {
-      case x if x <= 60 => Cost(2, 50) * modifier
-      case x if x <= 120 => Cost(3, 50) * modifier
-      case x if x > 120 => Cost(9, 99) * modifier
-      case default => Cost(1,0) * modifier
-    }
+    (minutes match {
+      case x if x <= 60 => Cost(2, 50)
+      case x if x <= 120 => Cost(3, 50)
+      case x if x > 120 => Cost(9, 99)
+      case default => Cost(1,0)
+    }) * modifier
   }
 }
 
