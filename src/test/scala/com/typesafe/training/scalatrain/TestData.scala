@@ -19,19 +19,19 @@ object TestData {
   val reddish = Station("Reddish")
 
   val ice724MunichTime = Time(8, 50)
-
+  // 1, 10
   val ice724NurembergTime = Time(10)
-
+  // 2, 10
   val ice724FrankfurtTime = Time(12, 10)
-
+  // 1, 29
   val ice724CologneTime = Time(13, 39)
 
   val ice726MunichTime = Time(7, 50)
-
+  // 1, 10
   val ice726NurembergTime = Time(9)
-
+  // 1, 10
   val ice726FrankfurtTime = Time(11, 10)
-
+  // 1, 52
   val ice726CologneTime = Time(13, 2)
 
   val ice724 = Train(
@@ -65,4 +65,11 @@ object TestData {
   val ice726Munich2Nuremberg = Hop(munich, nuremberg, ice726)
   val ice726Nuremburg2Frankfurt = Hop(nuremberg, frankfurt, ice726)
   val ice726Frankfurt2Cologne = Hop(frankfurt, essen, ice726)
+
+  //Paths
+  val ice724Path = Path(List(ice724Munich2Nuremberg, ice724Nuremburg2Frankfurt, ice724Frankfurt2Cologne))
+  val ice726Path = Path(List(ice726Munich2Nuremberg, ice726Nuremburg2Frankfurt, ice726Frankfurt2Cologne))
+
+  val ice724PathByTime = Path(List(ice724Munich2Nuremberg, ice724Frankfurt2Cologne, ice724Nuremburg2Frankfurt))
+  val ice726PathByCost = Path(List(ice726Munich2Nuremberg, ice726Frankfurt2Cologne, ice726Nuremburg2Frankfurt))
 }

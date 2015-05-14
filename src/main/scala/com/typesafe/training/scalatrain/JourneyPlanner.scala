@@ -26,9 +26,9 @@ class JourneyPlanner(trains: Set[Train]) {
       time <- train.timeAt(station)
     } yield (time, train)
 
-  def calculateConnections(departureTime: Time, fromStation: Station, toStation: Station): List[List[Hop]] = {
+  def calculateConnections(departureTime: Time, fromStation: Station, toStation: Station): List[Path] = {
 
-    def traverse(fromStation: Station, acc:List[Hop], departureTime: Time): List[List[Hop]] = {
+    def traverse(fromStation: Station, acc:List[Hop], departureTime: Time): List[Path] = {
       val hopsForStationAfterDepartureTime = getHopsForStationFromTime(fromStation, departureTime).
         filter(hop => !acc.contains(hop))
 
@@ -37,7 +37,7 @@ class JourneyPlanner(trains: Set[Train]) {
         case _ => {
           hopsForStationAfterDepartureTime.flatMap(hop => {
             if(hop.to == toStation) {
-              List(acc :+ hop)
+              List(Path(acc :+ hop))
             } else {
               traverse(hop.to, acc :+ hop, hop.arrivalTime)
             }
