@@ -39,11 +39,7 @@ case class Hop(from: Station, to: Station, train: Train) {
 
   val travelTime: Int = Minutes.minutesBetween(departureTime.time, arrivalTime.time).getMinutes
 
-  val cost: Cost = {
-    Minutes.minutesBetween(departureTime.time, arrivalTime.time).getMinutes match {
-      case x: Int => Cost.generateCost(x, train.costModifier)
-    }
-  }
+  val cost: Cost = Cost.generateCost(travelTime, train.costModifier)
 
   //  override def compare(that: Hop): Int = {
   //    val thisTime = (arrivalTime, departureTime)
