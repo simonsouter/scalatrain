@@ -5,8 +5,9 @@
 package com.typesafe.training.scalatrain
 
 import TestData._
-import java.lang.{ IllegalArgumentException => IAE }
-import org.scalatest.{ Matchers, WordSpec }
+import java.lang.{IllegalArgumentException => IAE}
+import org.joda.time.DateTime
+import org.scalatest.{Matchers, WordSpec}
 
 class TrainSpec extends WordSpec with Matchers {
 
@@ -43,8 +44,17 @@ class TrainSpec extends WordSpec with Matchers {
 
   "back2backStations" should {
     "be calculated correctly" in {
-      ice724.backToBackStations shouldEqual Seq((munich,nuremberg), (nuremberg, frankfurt), (frankfurt, cologne))
-      ice726.backToBackStations shouldEqual Seq((munich,nuremberg), (nuremberg, frankfurt), (frankfurt, essen))
+      ice724.backToBackStations shouldEqual Seq((munich, nuremberg), (nuremberg, frankfurt), (frankfurt, cologne))
+      ice726.backToBackStations shouldEqual Seq((munich, nuremberg), (nuremberg, frankfurt), (frankfurt, essen))
+    }
+  }
+
+  "RunsOnDate" should {
+    "ice724 doesnt run on exception" in {
+      ice724.runsOnDate(DateTime.parse("2015-05-13T07:00:00Z")) shouldBe false
+    }
+    "ice724 runs on Monday" in {
+      ice724.runsOnDate(DateTime.parse("2015-05-11T07:00:00Z")) shouldBe true
     }
   }
 }

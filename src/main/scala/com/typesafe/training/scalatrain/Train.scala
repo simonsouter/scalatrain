@@ -4,7 +4,7 @@
 
 package com.typesafe.training.scalatrain
 
-import org.joda.time.LocalTime
+import org.joda.time.{DateTime, LocalTime}
 
 import scala.collection.immutable.Seq
 
@@ -19,14 +19,6 @@ case class Train(info: TrainInfo, timeTable: Seq[(Schedule, Station)], costModif
   val hops: Seq[Hop] =
     backToBackStations.map(b2b => Hop(b2b._1, b2b._2, this))
 
-//  def timeAt(station: Station, day: Int): Option[LocalTime] = {
-//    val times = for {
-//      (sched, stat) <- schedule if sched.days.contains(day) && stat == station
-//    } yield {sched.time}
-//
-//    if(times.isEmpty) None else Some(times.head)
-//  }
-
   def timeAt(station: Station): Option[Schedule] = {
     val maybeSchedule = timeTable.find(sched =>
       sched match {
@@ -39,6 +31,10 @@ case class Train(info: TrainInfo, timeTable: Seq[(Schedule, Station)], costModif
 
   def backToBackStations: Seq[(Station, Station)] = {
     stations.zip(stations.tail)
+  }
+
+  def runsOnDate(date: DateTime): Boolean = {
+    timeTable.map(tt => tt._1.availableOnDate(date)).reduce(_ && _)
   }
 
 //  def stationDepartures(): Seq[(Station, Time)] = {

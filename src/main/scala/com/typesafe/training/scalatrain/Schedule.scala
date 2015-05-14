@@ -15,12 +15,15 @@ case class Schedule(days: Set[Days.Value], time: LocalTime, exceptions: List[Dat
    * Returns true if the schedule runs on the correct day and the time is not before the provided time.
    */
   def available(date: DateTime, requiredTime: LocalTime): Boolean = {
+    if (availableOnDate(date) && !requiredTime.isAfter(time)) true
+    else false
+  }
 
-    //Is the date found in the exception?
+  def availableOnDate(date: DateTime): Boolean = {
     val exMatched = exceptions.find(ex => datesMatch(date, ex)).isDefined
 
-    if (exMatched) false
-    else if (days.contains(Days.apply(date.getDayOfWeek() - 1)) && !requiredTime.isAfter(time)) true
+    if(exMatched) false
+    else if(days.contains(Days.apply(date.getDayOfWeek() - 1))) true
     else false
   }
 
