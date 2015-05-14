@@ -27,25 +27,28 @@ class JourneyPlanner(trains: Set[Train]) {
     } yield (time, train)
 
   def calculateConnections(departureTime: Time, fromStation: Station, toStation: Station): List[List[Hop]] = {
-    traverse(fromStation, toStation, List(), departureTime)
-  }
 
-  def traverse(fromStation: Station, toStation: Station, acc:List[Hop], departureTime: Time): List[List[Hop]] = {
-    val hopsForStationAfterDepartureTime = getHopsForStationFromTime(fromStation, departureTime)
+    def traverse(fromStation: Station, acc:List[Hop], departureTime: Time): List[List[Hop]] = {
+      val hopsForStationAfterDepartureTime = getHopsForStationFromTime(fromStation, departureTime)
 
-    hopsForStationAfterDepartureTime match {
-      case List() => List()
-      case _ => {
-        hopsForStationAfterDepartureTime.flatMap(hop => {
-          if(hop.to == toStation) {
-            List(acc :+ hop)
-          } else {
-            traverse(hop.to, toStation, acc :+ hop, hop.departureTime)
-          }
-        })
+      hopsForStationAfterDepartureTime match {
+        case List() => List()
+        case _ => {
+          hopsForStationAfterDepartureTime.flatMap(hop => {
+            if(hop.to == toStation) {
+              List(acc :+ hop)
+            } else {
+              traverse(hop.to, acc :+ hop, hop.departureTime)
+            }
+          })
+        }
       }
     }
+
+    traverse(fromStation, List(), departureTime)
   }
+
+
 
   def getHopsForStationFromTime(fromStation: Station, departureTime: Time): List[Hop] = {
     mapHopsByStations.get(fromStation).getOrElse(Set()).filter(_.departureTime > departureTime).toList
