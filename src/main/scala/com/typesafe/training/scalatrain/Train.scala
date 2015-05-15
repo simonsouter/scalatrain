@@ -8,7 +8,7 @@ import org.joda.time.{DateTime, LocalTime}
 
 import scala.collection.immutable.Seq
 
-case class Train(info: TrainInfo, timeTable: Seq[(Schedule, Station)], costModifier: Double = 1.0) {
+case class Train(info: TrainInfo, timeTable: Seq[(Schedule, Station)], lastMaintenanceDate: DateTime, costModifier: Double = 1.0) {
   require(timeTable.size >= 2, "schedule must contain at least two elements")
   require(timesConsecutive(timeTable.map(time => time._1)))
 

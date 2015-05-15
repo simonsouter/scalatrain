@@ -5,7 +5,6 @@
 package com.typesafe.training.scalatrain
 
 import org.joda.time.{DateTime, LocalTime}
-import org.scalatest.time.Day
 
 object TestData {
 
@@ -46,7 +45,7 @@ object TestData {
       ice724NurembergTime -> nuremberg,
       ice724FrankfurtTime -> frankfurt,
       ice724CologneTime -> cologne
-    )
+    ), new DateTime
   )
 
   val ice726 = Train(
@@ -56,7 +55,7 @@ object TestData {
       ice726NurembergTime -> nuremberg,
       ice726FrankfurtTime -> frankfurt,
       ice726CologneTime -> essen
-    )
+    ), new DateTime
   )
 
   val planner = new JourneyPlanner(Set(ice724, ice726))
