@@ -73,7 +73,6 @@ class JourneyPlanner(trains: Set[Train]) {
   }
 
   def isShortTrip(from: Station, to: Station): Boolean = {
-
     trains.exists(
       train => {
         train.stations.dropWhile(!_.equals(from)) match {

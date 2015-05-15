@@ -57,4 +57,10 @@ class TrainSpec extends WordSpec with Matchers {
       ice724.runsOnDate(DateTime.parse("2015-05-11T07:00:00Z")) shouldBe true
     }
   }
+
+  "NextMaintenanceDate" should {
+    "Calculate" in {
+      ice724.nextMaintenanceDate shouldEqual DateTime.parse("2015-11-10T00:00:00Z")
+    }
+  }
 }

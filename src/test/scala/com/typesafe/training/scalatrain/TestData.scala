@@ -45,7 +45,7 @@ object TestData {
       ice724NurembergTime -> nuremberg,
       ice724FrankfurtTime -> frankfurt,
       ice724CologneTime -> cologne
-    ), new DateTime
+    ), DateTime.parse("2015-01-01T00:00:00Z")
   )
 
   val ice726 = Train(
@@ -55,7 +55,7 @@ object TestData {
       ice726NurembergTime -> nuremberg,
       ice726FrankfurtTime -> frankfurt,
       ice726CologneTime -> essen
-    ), new DateTime
+    ), DateTime.parse("2015-01-01T00:00:00Z")
   )
 
   val planner = new JourneyPlanner(Set(ice724, ice726))
