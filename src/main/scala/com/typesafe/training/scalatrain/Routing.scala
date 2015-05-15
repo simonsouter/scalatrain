@@ -14,6 +14,8 @@ case class Path(path: List[Hop]) {
 
   val totalCost: Money = path.foldLeft(Money.parse("GBP 0"))((c, h) => c plus h.cost)
 
+  val totalDistance: Int = path.foldLeft(0)((c, h) => c + h.kilometers)
+
   val totalTime: Int = {
     if (path.head == path.last) {
       Minutes.minutesBetween(path.head.departureTime.time, path.head.arrivalTime.time).getMinutes
@@ -32,6 +34,8 @@ case class Hop(from: Station, to: Station, train: Train) {
   val arrivalTime: Schedule = train.timeAt(to).get
 
   val travelTime: Int = Minutes.minutesBetween(departureTime.time, arrivalTime.time).getMinutes
+
+  val kilometers = (travelTime / 60) * 80
 
   val cost: Money = Cost.generateCost(travelTime, train.costModifier)
 

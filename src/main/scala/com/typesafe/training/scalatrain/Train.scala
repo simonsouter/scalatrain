@@ -4,7 +4,7 @@
 
 package com.typesafe.training.scalatrain
 
-import org.joda.time.{DateTime, LocalTime}
+import org.joda.time.{LocalDate, DateTime, LocalTime}
 
 import scala.collection.immutable.Seq
 
@@ -36,9 +36,34 @@ case class Train(info: TrainInfo, timeTable: Seq[(Schedule, Station)], lastMaint
     timeTable.map(tt => tt._1.availableOnDate(date)).reduce(_ && _)
   }
 
-//  def stationDepartures(): Seq[(Station, Time)] = {
-//    schedule.map(tuple => (tuple._2, tuple._1))
-//  }
+  def nextMaintenanceDate: DateTime = {
+    val maintCutoff = lastMaintenanceDate.plusYears(1)
+
+    var latestDate = lastMaintenanceDate
+    var totalKms = 0
+    do {
+      totalKms += getKmOnDate(latestDate)
+
+      latestDate = latestDate.plusDays(1)
+    } while (latestDate.isBefore(maintCutoff) && totalKms < 100000)
+
+    latestDate
+  }
+
+  private def getKmOnDate(d: DateTime) = {
+    val runningHops = hops.filter(hop =>
+      timeAt(hop.from) match {
+        case Some(sched) => sched.availableOnDate(d)
+        case None => false
+      }
+    )
+
+    runningHops.foldLeft(0)((c, h) => c + h.kilometers)
+  }
+
+  //  def stationDepartures(): Seq[(Station, Time)] = {
+  //    schedule.map(tuple => (tuple._2, tuple._1))
+  //  }
 
   //TODO
   private def timesConsecutive(times: Seq[Schedule]): Boolean = {
