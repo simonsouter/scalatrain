@@ -15,6 +15,7 @@ import scala.util.{Failure, Success}
 class JourneyPlanner(trains: Set[Train]) {
 
   val ticketMaster = TicketMaster
+  val emailer = new Emailer
 
   val stations: Set[Station] =
   // Could also be expressed in short notation: trains flatMap (_.stations)
@@ -72,6 +73,7 @@ class JourneyPlanner(trains: Set[Train]) {
   def purchaseTicket(user: User, path: Path, date: DateTime, tType: pType.Value): Purchase = {
     val newTicket = Purchase(user, path.path.head.from, path.path.last.to, DateTime.now, tType)
     TicketMaster.addPurchase(newTicket)
+    emailer.sendEmailThankYou(user.email, path)
     newTicket
   }
 
