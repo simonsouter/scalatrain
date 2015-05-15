@@ -27,12 +27,11 @@ class Emailer {
   }
 
   private def messageFromPath(path: Path): String = {
-    //    def a = "Leg ${l} - Departing ${a} at ${aa} and arriving into ${b} at ${bb}"
     val message = for {
-      a <- path.path
-      b = path.path.indexOf(a) + 1
+      hop <- path.path
+      index = path.path.indexOf(hop) + 1
     } yield {
-        s"Leg ${b} - Departing ${a.from.name} at ${a.departureTime.time.toString} and arriving into ${a.to.name} at ${a.arrivalTime.time.toString}\n"
+        s"Leg ${index} - Departing ${hop.from.name} at ${hop.departureTime.time.toString} and arriving into ${hop.to.name} at ${hop.arrivalTime.time.toString}\n"
       }
 
     message.reduce(_ + _)

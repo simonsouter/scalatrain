@@ -27,16 +27,14 @@ class FixerIO {
       .withHeaders("Accept" -> "application/json")
       .withRequestTimeout(10000)
 
-    val future = holder.get()
-
-    val fut = future.map(ws => {
+    val future = holder.get().map(ws => {
       val exch = ws.json.as[ExchangeRate]
       val requiredRate = exch.rates.find(x => x._1 == symbol)
 
       //TODO fail future?
       requiredRate.map(x => x._2).get
     })
-    fut
+    future
   }
 }
 
