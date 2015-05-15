@@ -69,10 +69,10 @@ class JourneyPlanner(trains: Set[Train]) {
    * @param tType Ticket type (purchase type)
    * @return True if successful, false if not.
    */
-  def purchaseTicket(user: User, path: Path, date: DateTime, tType: pType.Value): Boolean = {
+  def purchaseTicket(user: User, path: Path, date: DateTime, tType: pType.Value): Purchase = {
     val newTicket = Purchase(user, path.path.head.from, path.path.last.to, DateTime.now, tType)
     TicketMaster.addPurchase(newTicket)
-    true
+    newTicket
   }
 
   /**
