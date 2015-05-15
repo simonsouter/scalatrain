@@ -11,8 +11,13 @@ resolvers += "Typesafe Releases" at "http://repo.typesafe.com/typesafe/releases/
 resolvers += "mvnrepository" at "http://mvnrepository.com/artifact/"
 
 libraryDependencies ++= Dependencies.scalaTrain
-libraryDependencies += "org.joda" % "joda-money" % "0.10.0"
-libraryDependencies += "com.typesafe.play" %% "play-ws" % Version.playJson
+
+libraryDependencies ++= {
+  Seq(
+    "org.joda" % "joda-money" % "0.10.0",
+    "com.typesafe.play" %% "play-ws" % Version.playJson,
+    "org.apache.commons" % "commons-email" % "1.3.1")
+}
 
 scalacOptions ++= List(
   "-unchecked",
@@ -24,4 +29,4 @@ scalacOptions ++= List(
 
 initialCommands in console := "import com.typesafe.training.scalatrain._"
 
-initialCommands in (Test, console) := (initialCommands in console).value + ",TestData._"
+initialCommands in(Test, console) := (initialCommands in console).value + ",TestData._"
