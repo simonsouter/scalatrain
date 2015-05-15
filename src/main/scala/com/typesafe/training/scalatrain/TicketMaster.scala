@@ -2,8 +2,6 @@ package com.typesafe.training.scalatrain
 
 import org.joda.time.DateTime
 
-import scala.concurrent.Future
-
 /**
  * Created by charlesrice on 15/05/15.
  */

@@ -83,9 +83,12 @@ object TestData {
   val ice724PathByTime = Path(List(ice724Munich2Nuremberg, ice724Frankfurt2Cologne, ice724Nuremburg2Frankfurt))
   val ice726PathByCost = Path(List(ice726Munich2Nuremberg, ice726Frankfurt2Cologne, ice726Nuremburg2Frankfurt))
 
+  //Useful statics
+  val staticTime = DateTime.parse("2015-05-15T14:02:28.679+01:00")
+
   //Users
   val bob = User(Name("Bob", "Builder"), "bob@mail.net")
-  val purchase1 = Purchase(bob, Station("Munich"), Station("Nuremberg"), DateTime.parse("2015-05-15T14:02:28.679+01:00"), pType.Cheapest)
+  val purchase1 = Purchase(bob, Station("Munich"), Station("Nuremberg"), staticTime, pType.Cheapest)
 
   //Purchases
   val purchases = Source.fromFile("./src/main/resources/test_purchases").getLines.toList.map(s => {

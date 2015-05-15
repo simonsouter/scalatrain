@@ -108,4 +108,13 @@ class JourneyPlannerSpec extends WordSpec with Matchers {
       planner.sinkStations.size shouldBe 2
     }
   }
+
+  "Purchase ticket" should {
+    "return a ticket object" in {
+      import com.typesafe.training.scalatrain.pType._
+
+      val purchaseObject = Purchase(bob, munich, cologne, staticTime, Cheapest)
+      planner.purchaseTicket(bob, ice724Path, staticTime, Cheapest).copy(purchasedOn = staticTime) shouldEqual purchaseObject
+    }
+  }
 }
