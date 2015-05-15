@@ -4,6 +4,9 @@
 package com.typesafe.training.scalatrain
 
 
+import java.math.RoundingMode
+
+import org.joda.money.Money
 import org.joda.time.{DateTime, LocalTime}
 
 import scala.collection.immutable.Set
@@ -55,11 +58,11 @@ class JourneyPlanner(trains: Set[Train]) {
     traverse(fromStation, List(), departureTime)
   }
 
-  def calculateTrueCost(path: Path, date: DateTime): Cost = {
+  def calculateTrueCost(path: Path, date: DateTime): Money = {
     date match {
-      case x if DateTime.now plusDays 1 isAfter x => path.totalCost * 0.75
-      case x if DateTime.now plusDays 14 isAfter x => path.totalCost * 1.5
-      case x if DateTime.now plusDays 14 isBefore x => path.totalCost * 1.0
+      case x if DateTime.now plusDays 1 isAfter x => path.totalCost multipliedBy(0.75, RoundingMode.DOWN)
+      case x if DateTime.now plusDays 14 isAfter x => path.totalCost multipliedBy(1.5, RoundingMode.DOWN)
+      case x if DateTime.now plusDays 14 isBefore x => path.totalCost multipliedBy(1.0, RoundingMode.DOWN)
     }
   }
 

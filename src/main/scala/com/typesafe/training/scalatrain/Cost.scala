@@ -4,48 +4,35 @@
 
 package com.typesafe.training.scalatrain
 
-import play.api.libs.json.JsValue
+import java.math.RoundingMode
 
-import scala.util.Try
+import org.joda.money.{CurrencyUnit, Money}
+import org.joda.money.CurrencyUnit._
+
+import scala.concurrent.Await
+import scala.concurrent.duration.FiniteDuration
 
 object Cost {
+
+  lazy val fixerApi = new FixerIO
+
   /**
    * Given length of a Hop, generate the cost
    * @param minutes Minutes from departure time to arrival time, as an Int
    * @param modifier Double that increases or decreases ticket cost
    * @return Cost object
    */
-  def generateCost(minutes: Int, modifier: Double): Cost = {
+  def generateCost(minutes: Int, modifier: Double): Money = {
     (minutes match {
-      case x if x <= 60 => Cost(2, 50)
-      case x if x <= 120 => Cost(3, 50)
-      case x if x > 120 => Cost(9, 99)
-      case default => Cost(1,0)
-    }) * modifier
+      case x if x <= 60 => Money.parse("GBP 2.50")
+      case x if x <= 120 => Money.parse("GBP 3.50")
+      case x if x > 120 => Money.parse("GBP 9.99")
+      case default => Money.parse("GBP 1.00")
+    }) multipliedBy(modifier, RoundingMode.DOWN)
+  }
+
+  def convertCurrency(value: Money, targetCurrency: CurrencyUnit): Money = {
+    val rate = Await.result(fixerApi.getExchange(targetCurrency.toString), FiniteDuration(5, "seconds"))
+    value convertedTo(targetCurrency, new java.math.BigDecimal(rate), RoundingMode.DOWN)
   }
 }
-
-case class Cost(dollars: Int = 0, cents: Int = 0) extends Ordered[Cost] {
-  require(dollars >= 0, s"Negative \$$dollars isn't allowed!")
-  require(cents  >= 0 && cents <= 99, s"Cents must be 0-99, $cents found!")
-
-  val asCents = dollars * 100 + cents
-
-  //Useful operators
-  def multiply(that: Double): Cost = {
-    val cent2dollar = (cents * that) / 100
-    Cost((dollars * that).toInt + cent2dollar.toInt, ((cents * that) % 100).toInt)
-  }
-  def *(that: Double): Cost = multiply(that)
-
-  def +(that: Cost): Cost = {
-    val cent2dollar = (cents + that.cents) / 100
-    Cost((dollars + that.dollars + cent2dollar), (cents + that.cents) % 100)
-  }
-
-  def -(that: Cost): Int = this.asCents - that.asCents
-
-  def compare(that: Cost): Int = this - that
-}
-
-

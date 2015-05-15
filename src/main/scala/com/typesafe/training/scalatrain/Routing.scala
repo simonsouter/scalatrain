@@ -4,13 +4,15 @@
 
 package com.typesafe.training.scalatrain
 
+import org.joda.money.Money
+import org.joda.money.CurrencyUnit._
 import org.joda.time.Minutes
 
 case class Path(path: List[Hop]) {
 
   val size: Int = path.size
 
-  val totalCost: Cost = path.foldLeft(Cost(0))((c, h) => c + h.cost)
+  val totalCost: Money = path.foldLeft(Money.parse("GBP 0"))((c, h) => c plus h.cost)
 
   val totalDistance: Int = path.foldLeft(0)((c, h) => c + h.kilometers)
 
@@ -35,13 +37,13 @@ case class Hop(from: Station, to: Station, train: Train) {
 
   val kilometers = (travelTime / 60) * 80
 
-  val cost: Cost = Cost.generateCost(travelTime, train.costModifier)
+  val cost: Money = Cost.generateCost(travelTime, train.costModifier)
 
 }
 
 object PathCostOrdering extends Ordering[Path] {
   def compare(x: Path, y: Path): Int = {
-    x.totalCost - y.totalCost
+    x.totalCost compareTo y.totalCost
   }
 }
 

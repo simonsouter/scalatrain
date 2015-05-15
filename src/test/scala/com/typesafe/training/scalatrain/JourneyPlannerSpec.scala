@@ -4,6 +4,8 @@
 
 package com.typesafe.training.scalatrain
 
+import java.math.RoundingMode
+
 import TestData._
 import java.lang.{IllegalArgumentException => IAE}
 import org.joda.time.{DateTime, LocalTime}
@@ -91,13 +93,13 @@ class JourneyPlannerSpec extends WordSpec with Matchers {
 
   "CalculateTrueCost" should {
     "calculate discount if path is less than 1 day away" in {
-      planner.calculateTrueCost(ice724Path, DateTime.now plusHours 5) shouldEqual ice724Path.totalCost * 0.75
+      planner.calculateTrueCost(ice724Path, DateTime.now plusHours 5) shouldEqual ice724Path.totalCost.multipliedBy(0.75, RoundingMode.DOWN)
     }
     "do nothing if path is more than 2 weeks away" in {
-      planner.calculateTrueCost(ice724Path, DateTime.now plusDays 15) shouldEqual ice724Path.totalCost * 1.0
+      planner.calculateTrueCost(ice724Path, DateTime.now plusDays 15) shouldEqual ice724Path.totalCost.multipliedBy(1.0, RoundingMode.DOWN)
     }
     "increase price if path is less than 2 weeks away but more than 1 day" in {
-      planner.calculateTrueCost(ice724Path, DateTime.now plusDays 12) shouldEqual ice724Path.totalCost * 1.5
+      planner.calculateTrueCost(ice724Path, DateTime.now plusDays 12) shouldEqual ice724Path.totalCost.multipliedBy(1.5, RoundingMode.DOWN)
     }
   }
 
