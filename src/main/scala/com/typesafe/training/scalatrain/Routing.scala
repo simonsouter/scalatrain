@@ -12,7 +12,7 @@ case class Path(path: List[Hop]) {
 
   val totalCost: Cost = path.foldLeft(Cost(0))((c, h) => c + h.cost)
 
-  val totalTime: Int = path.foldLeft(0)((t, h) => t + h.travelTime)
+  val totalTime: Int = path.foldLeft(0)((t, h) => t + h.travelTime) // would be last arrival - first departure
 
   //  def orderByCost: Path = {
   //    Path(path.sortBy(h => h.cost))
