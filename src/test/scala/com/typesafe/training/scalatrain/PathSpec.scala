@@ -20,5 +20,14 @@ class PathSpec extends WordSpec with Matchers {
     "be sortable by cost" in {
       List(expensivePath, cheapPath).sortPathCost shouldEqual List(cheapPath, expensivePath)
     }
+    "calculate the correct size" in {
+      ice724Path.size shouldEqual 3
+      ice724Path.copy(path = List(ice724Path.path.head)).size shouldEqual 1
+    }
+    "calculate correct Total Travel Time in minutes" in {
+      ice724Path.totalTime shouldEqual 289
+      ice726Path.totalTime shouldEqual 312
+      Path(List(ice726Munich2Nuremberg)).totalTime shouldEqual ice726Munich2Nuremberg.travelTime
+    }
   }
 }
