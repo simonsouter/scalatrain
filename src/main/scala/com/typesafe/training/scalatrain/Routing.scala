@@ -12,20 +12,12 @@ case class Path(path: List[Hop]) {
 
   val totalCost: Cost = path.foldLeft(Cost(0))((c, h) => c + h.cost)
 
-  val totalTime: Int = path.foldLeft(0)((t, h) => t + h.travelTime) // would be last arrival - first departure
-
-  //  def orderByCost: Path = {
-  //    Path(path.sortBy(h => h.cost))
-  //  }
-  //
-  //  def orderByTravelTime: Path = {
-  //    Path(path.sorted(lengthOrdering))
-  //  }
-}
-
-object LengthOrdering extends Ordering[Hop] {
-  def compare(x: Hop, y: Hop): Int = {
-    x.travelTime - y.travelTime
+  val totalTime: Int = {
+    if (path.head == path.last) {
+      Minutes.minutesBetween(path.head.departureTime.time, path.head.arrivalTime.time).getMinutes
+    } else {
+      Minutes.minutesBetween(path.head.departureTime.time, path.last.arrivalTime.time).getMinutes
+    }
   }
 }
 
@@ -40,10 +32,6 @@ case class Hop(from: Station, to: Station, train: Train) {
   val travelTime: Int = Minutes.minutesBetween(departureTime.time, arrivalTime.time).getMinutes
 
   val cost: Cost = Cost.generateCost(travelTime, train.costModifier)
-
-  //  override def compare(that: Hop): Int = {
-  //    val thisTime = (arrivalTime, departureTime)
-  //  }
 
 }
 
@@ -61,9 +49,6 @@ object PathTimeOrdering extends Ordering[Path] {
 
 object Routing {
   implicit class ListOps(list: List[Path]) {
-    def random = {
-      List(4, 5, 6)
-    }
     def sortPathCost = {
       list.sorted(PathCostOrdering)
     }

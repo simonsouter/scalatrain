@@ -21,21 +21,23 @@ object TestData {
 
   val reddish = Station("Reddish")
 
-  val ice724MunichTime = Schedule(Set(Days.Monday, Days.Tuesday, Days.Wednesday, Days.Thursday, Days.Friday), new LocalTime(8, 50), List(DateTime.parse("2015-05-13T07:22:05Z")))
+  import com.typesafe.training.scalatrain.Days._
 
-  val ice724NurembergTime = Schedule(Set(Days.Monday, Days.Tuesday, Days.Wednesday, Days.Thursday, Days.Friday), new LocalTime(10, 0))
+  val ice724MunichTime = Schedule(Set(Monday, Tuesday, Wednesday, Thursday, Friday, Saturday, Sunday), new LocalTime(8, 50), List(DateTime.parse("2015-05-13T07:22:05Z")))
 
-  val ice724FrankfurtTime = Schedule(Set(Days.Monday, Days.Tuesday, Days.Wednesday, Days.Thursday, Days.Friday), new LocalTime(12, 10))
+  val ice724NurembergTime = Schedule(Set(Monday, Tuesday, Wednesday, Thursday, Friday, Saturday, Sunday), new LocalTime(10, 0))
 
-  val ice724CologneTime = Schedule(Set(Days.Monday, Days.Tuesday, Days.Wednesday, Days.Thursday, Days.Friday), new LocalTime(13, 39))
+  val ice724FrankfurtTime = Schedule(Set(Monday, Tuesday, Wednesday, Thursday, Friday, Saturday, Sunday), new LocalTime(12, 10))
 
-  val ice726MunichTime = Schedule(Set(Days.Monday, Days.Tuesday, Days.Wednesday, Days.Thursday, Days.Friday), new LocalTime(7, 50))
+  val ice724CologneTime = Schedule(Set(Monday, Tuesday, Wednesday, Thursday, Friday, Saturday, Sunday), new LocalTime(13, 39))
 
-  val ice726NurembergTime = Schedule(Set(Days.Monday, Days.Tuesday, Days.Wednesday, Days.Thursday, Days.Friday), new LocalTime(9, 0))
+  val ice726MunichTime = Schedule(Set(Monday, Tuesday, Wednesday, Thursday, Friday, Saturday, Sunday), new LocalTime(7, 50))
 
-  val ice726FrankfurtTime = Schedule(Set(Days.Monday, Days.Tuesday, Days.Wednesday, Days.Thursday, Days.Friday), new LocalTime(11, 10))
+  val ice726NurembergTime = Schedule(Set(Monday, Tuesday, Wednesday, Thursday, Friday, Saturday, Sunday), new LocalTime(9, 0))
 
-  val ice726CologneTime = Schedule(Set(Days.Monday, Days.Tuesday, Days.Wednesday, Days.Thursday, Days.Friday), new LocalTime(13, 2))
+  val ice726FrankfurtTime = Schedule(Set(Monday, Tuesday, Wednesday, Thursday, Friday, Saturday, Sunday), new LocalTime(11, 10))
+
+  val ice726CologneTime = Schedule(Set(Monday, Tuesday, Wednesday, Thursday, Friday, Saturday, Sunday), new LocalTime(13, 2))
 
   val ice724 = Train(
     InterCityExpress(724),
