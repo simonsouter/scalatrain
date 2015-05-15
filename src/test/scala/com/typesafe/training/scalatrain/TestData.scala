@@ -6,6 +6,8 @@ package com.typesafe.training.scalatrain
 
 import org.joda.time.{DateTime, LocalTime}
 
+import scala.io.Source
+
 object TestData {
 
   val munich = Station("Munich")
@@ -61,8 +63,10 @@ object TestData {
   val planner = new JourneyPlanner(Set(ice724, ice726))
 
   //Hops: ice724
-  val ice724Munich2Nuremberg = Hop(munich, nuremberg, ice724) // 1 hour 10
-  val ice724Nuremburg2Frankfurt = Hop(nuremberg, frankfurt, ice724) // 2 hour 10
+  val ice724Munich2Nuremberg = Hop(munich, nuremberg, ice724)
+  // 1 hour 10
+  val ice724Nuremburg2Frankfurt = Hop(nuremberg, frankfurt, ice724)
+  // 2 hour 10
   val ice724Frankfurt2Cologne = Hop(frankfurt, cologne, ice724) // 1 hour 29
 
   //Hops: ice726
@@ -78,4 +82,24 @@ object TestData {
 
   val ice724PathByTime = Path(List(ice724Munich2Nuremberg, ice724Frankfurt2Cologne, ice724Nuremburg2Frankfurt))
   val ice726PathByCost = Path(List(ice726Munich2Nuremberg, ice726Frankfurt2Cologne, ice726Nuremburg2Frankfurt))
+
+  //Users
+  val bob = User(Name("Bob", "Builder"), "bob@mail.net")
+  val purchase1 = Purchase(bob, Station("Munich"), Station("Nuremberg"), DateTime.parse("2015-05-15T14:02:28.679+01:00"), pType.Cheapest)
+
+  //Purchases
+  val purchases = Source.fromFile("./src/main/resources/test_purchases").getLines.toList.map(s => {
+    val raw = s.split(",")
+    Purchase(
+      User(Name(raw(0), raw(1)), raw(2)),
+      Station(raw(3)),
+      Station(raw(4)),
+      DateTime.parse(raw(5)),
+      raw(6) match {
+        case x if x == pType.Cheapest.toString => pType.Cheapest
+        case x if x == pType.Fastest.toString => pType.Fastest
+      }
+    )
+  })
+
 }
