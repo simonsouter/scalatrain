@@ -10,8 +10,11 @@ import org.joda.money.Money
 import org.joda.time.{DateTime, LocalTime}
 
 import scala.collection.immutable.Set
+import scala.util.{Failure, Success}
 
 class JourneyPlanner(trains: Set[Train]) {
+
+  val ticketMaster = TicketMaster
 
   val stations: Set[Station] =
   // Could also be expressed in short notation: trains flatMap (_.stations)
@@ -19,7 +22,7 @@ class JourneyPlanner(trains: Set[Train]) {
 
   lazy val sinkStations: Seq[Station] = {
     val sinkStations = for {
-      (a,b) <- mapHopsByStations if b.isEmpty
+      (a, b) <- mapHopsByStations if b.isEmpty
     } yield a
     sinkStations.toSeq
   }
@@ -58,6 +61,26 @@ class JourneyPlanner(trains: Set[Train]) {
     traverse(fromStation, List(), departureTime)
   }
 
+  /**
+   * Given a user, a path and the ticket type, create the purchase record in the TicketMaster
+   * @param user
+   * @param path
+   * @param date
+   * @param tType Ticket type (purchase type)
+   * @return True if successful, false if not.
+   */
+  def purchaseTicket(user: User, path: Path, date: DateTime, tType: pType.Value): Purchase = {
+    val newTicket = Purchase(user, path.path.head.from, path.path.last.to, DateTime.now, tType)
+    TicketMaster.addPurchase(newTicket)
+    newTicket
+  }
+
+  /**
+   * Factor in the time of purchase, and increase or decrease total cost accordingly
+   * @param path
+   * @param date
+   * @return
+   */
   def calculateTrueCost(path: Path, date: DateTime): Money = {
     date match {
       case x if DateTime.now plusDays 1 isAfter x => path.totalCost multipliedBy(0.75, RoundingMode.DOWN)
